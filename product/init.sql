@@ -1,0 +1,3 @@
+CREATE USER avat WITH PASSWORD 'secret123';
+CREATE DATABASE micro_product;
+GRANT ALL PRIVILEGES ON DATABASE micro_product TO avat;
