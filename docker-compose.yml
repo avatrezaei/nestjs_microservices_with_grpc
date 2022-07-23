@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  order:
+    build: ./order
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+ 
+
+  product:
+    build: ./product
+    container_name: product
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+    links: 
+      - postgres
+  
+
+  auth:
+    build: ./auth
+    ports:
+      - "3002:3002"
+    depends_on:
+      - postgres
+ 
+
+  gateway:
+    build: ./gateway
+    depends_on:
+      - auth
+      - product
+      - order
+      - postgres
+    ports:
+      - "3003:3003" 
+   
+
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=avat
+      - POSTGRES_PASSWORD=secret123
+      - POSTGRES_DB=micro_product
+    volumes:
+      - ./database:/data/db
+    ports:
+      - '5432:5432'
+  
+ 
